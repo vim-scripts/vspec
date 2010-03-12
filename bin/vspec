@@ -1,0 +1,39 @@
+#!/bin/bash
+
+if [ "$#" = '0' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]
+then
+  echo "Usage: $0 {input-script} [{non-standard-runtimepath} ...]"
+  exit
+fi
+
+driver_script=",,$$.vim"
+input_script="$1"
+shift  # Now $@ is expanded to all {non-standard-runtimepath}s.
+
+
+
+
+cat <<END >"$driver_script"
+  function s:main()
+    let standard_paths = split(&runtimepath, ',')[1:-1]
+    let non_standard_paths = ['$(echo "$@" | sed "s/  */', '/g")']
+    let all_paths = copy(standard_paths)
+    for i in non_standard_paths
+      let all_paths = [i] + all_paths + [i . '/after']
+    endfor
+    let &runtimepath = join(all_paths, ',')
+
+    1 verbose call vspec#test('$input_script')
+    qall!
+  endfunction
+  call s:main()
+END
+
+vim -u NONE -i NONE -N -e -s -S "$driver_script" 2>&1 | sed "s|$(pwd)|.|g"
+
+
+
+
+rm -f "$driver_script"
+
+#__END__

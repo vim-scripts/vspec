@@ -1,0 +1,13 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3012
+
+*vspec* is a Vim library plugin to test Vim script.
+
+
+Requirements:
+- Vim 7.2 or later
+
+Latest version:
+http://github.com/kana/vim-vspec
+
+Document in HTML format:
+http://kana.github.com/config/vim/vspec.html
