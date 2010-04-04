@@ -1,9 +1,9 @@
 *vspec.txt*	Test framework for Vim script
 
-Version 0.0.3
+Version 0.0.4
 Script ID: 3012
 Copyright (C) 2009-2010 kana <http://whileimautomaton.net/>
-License: MIT license  {{{
+License: So-called MIT/X license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
     "Software"), to deal in the Software without restriction, including
@@ -280,6 +280,11 @@ ETC ~
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+0.0.4	2010-04-04T20:59:35+09:00		*vspec-changelog-0.0.4*
+	- Add additional syntax file for |vspec-commands|.
+	- |:Should|: Provide expression completion for convenience.
+	- Improve minor stuffs.
 
 0.0.3	2010-03-12T21:43:12+09:00		*vspec-changelog-0.0.3*
 	- Add test driver |bin/vspec|.

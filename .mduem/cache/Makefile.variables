@@ -1,6 +1,6 @@
-all_files_in_repos :=          Makefile autoload/vspec.vim bin/vspec doc/vspec.txt test/context.expected test/context.input test/custom-matcher.expected test/custom-matcher.input test/no-test.expected test/no-test.input test/tools.expected test/tools.input test/typical-content.expected test/typical-content.input
+all_files_in_repos :=          Makefile after/syntax/vim/vspec.vim autoload/vspec.vim bin/vspec doc/vspec.txt test/context.expected test/context.input test/custom-matcher.expected test/custom-matcher.input test/no-test.expected test/no-test.input test/syntax.expected test/syntax.input test/tools.expected test/tools.input test/typical-content.expected test/typical-content.input
 current_branch := master
 origin_name := origin
 origin_uri := ../.
 repos_name := vim-vspec
-version := 0.0.3
+version := 0.0.4

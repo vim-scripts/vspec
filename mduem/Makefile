@@ -15,7 +15,7 @@
 #
 # - Use suffix "_p" to indicate that a boolean value is resulted from
 #   a variable.
-#   Example: vim_script_repos_p, SHOULD_INSTALL_ASIS_P
+#   Example: SHOULD_INSTALL_ASIS_P
 #
 # - Use noun for ordinary variables.
 #   Example: repos_name, TARGETS_GENERATED
@@ -100,7 +100,12 @@ $(cache_makefile): \
 endif
 include $(cache_makefile)
 
-vim_script_repos_p := $(filter vim-%,$(repos_name))
+	# The type of a repository.  It must be one of the following values:
+	#
+	# generic       For any software.
+	# vim-script    For Vim plugins, etc.
+REPOS_TYPE ?= $(if $(filter vim-%,$(repos_name)),vim-script,generic)
+vim_script_repos_p := $(filter vim-script,$(REPOS_TYPE))
 
 
 
@@ -177,10 +182,10 @@ vim_script_deps := $(if $(vim_script_repos_p),vim-vspec vimup,)
 all_deps := $(vim_script_deps) $(DEPS)
 
 DEP_vim_vspec_URI ?= ../vim-vspec
-DEP_vim_vspec_VERSION ?= 0.0.3a1
+DEP_vim_vspec_VERSION ?= 0.0.3
 
 DEP_vimup_URI ?= ../vimup
-DEP_vimup_VERSION ?= 0.0.0a1
+DEP_vimup_VERSION ?= 0.0.0a3
 
 
 	# BUGS: This resolves "../" just once, but it's enough for usual cases.
@@ -251,7 +256,7 @@ $(2): $(1)
 ifneq '$(call SHOULD_INSTALL_ASIS_P,$(1))' ''
 	@cp '$(1)' '$(2)'
 else
-	@sed -e 's/0.0.3/$(version)/' '$(1)' >'$(2)'
+	@sed -e 's/0.0.4/$(version)/' '$(1)' >'$(2)'
 endif
 
 endef

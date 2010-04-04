@@ -1,7 +1,7 @@
 " vspec - Test framework for Vim script
-" Version: 0.0.3
+" Version: 0.0.4
 " Copyright (C) 2009-2010 kana <http://whileimautomaton.net/>
-" License: MIT license  {{{
+" License: So-called MIT/X license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
 "     "Software"), to deal in the Software without restriction, including
@@ -215,7 +215,7 @@ command! -nargs=+ It  call vspec#cmd_It(<q-args>)
 command! -nargs=0 ResetContext  call vspec#cmd_ResetContext()
 command! -nargs=0 SaveContext  call vspec#cmd_SaveContext()
 
-command! -nargs=+ Should
+command! -complete=expression -nargs=+ Should
 \ call vspec#cmd_Should(s:parse_should_args(<q-args>, 'raw'),
 \                       map(s:parse_should_args(<q-args>, 'eval'),
 \                           'eval(v:val)'))
