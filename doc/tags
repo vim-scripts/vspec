@@ -1,7 +1,13 @@
-:It	vspec.txt	/*:It*
+:Expect	vspec.txt	/*:Expect*
+:Expect-not	vspec.txt	/*:Expect-not*
 :ResetContext	vspec.txt	/*:ResetContext*
+:SKIP	vspec.txt	/*:SKIP*
 :SaveContext	vspec.txt	/*:SaveContext*
-:Should	vspec.txt	/*:Should*
+:TODO	vspec.txt	/*:TODO*
+:after	vspec.txt	/*:after*
+:before	vspec.txt	/*:before*
+:describe	vspec.txt	/*:describe*
+:it	vspec.txt	/*:it*
 Call()	vspec.txt	/*Call()*
 Ref()	vspec.txt	/*Ref()*
 Set()	vspec.txt	/*Set()*
@@ -20,6 +26,7 @@ vspec-changelog-0.0.1	vspec.txt	/*vspec-changelog-0.0.1*
 vspec-changelog-0.0.2	vspec.txt	/*vspec-changelog-0.0.2*
 vspec-changelog-0.0.3	vspec.txt	/*vspec-changelog-0.0.3*
 vspec-changelog-0.0.4	vspec.txt	/*vspec-changelog-0.0.4*
+vspec-changelog-1.0.0	vspec.txt	/*vspec-changelog-1.0.0*
 vspec-commands	vspec.txt	/*vspec-commands*
 vspec-contents	vspec.txt	/*vspec-contents*
 vspec-custom-matcher	vspec.txt	/*vspec-custom-matcher*

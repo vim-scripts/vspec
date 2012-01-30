@@ -1,8 +1,8 @@
-*vspec.txt*	Test framework for Vim script
+*vspec.txt*	Testing framework for Vim script
 
-Version 0.0.4
+Version 1.0.0
 Script ID: 3012
-Copyright (C) 2009-2010 kana <http://whileimautomaton.net/>
+Copyright (C) 2009-2012 Kana Natsuno <http://whileimautomaton.net/>
 License: So-called MIT/X license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
     a copy of this software and associated documentation files (the
@@ -45,7 +45,7 @@ INTRODUCTION					*vspec-introduction*
 
 
 Requirements:
-- Vim 7.2 or later
+- Vim 7.3 or later
 
 Latest version:
 http://github.com/kana/vim-vspec
@@ -63,7 +63,7 @@ INTERFACE					*vspec-interface*
 EXTERNAL COMMANDS				*vspec-external-commands*
 
 						*bin/vspec*
-bin/vspec {input-script} [{non-standard-runtimepath} ...]
+bin/vspec [{non-standard-runtimepath} ...] {input-script}
 			Utility command to test Vim script with vspec.
 
 			{input-script} is the path to a file which is a test
@@ -75,46 +75,33 @@ bin/vspec {input-script} [{non-standard-runtimepath} ...]
 
 			Examples:
 >
-				$ ./bin/vspec test/context.input .
+				$ ./bin/vspec . test/context.input
 <
 
 ------------------------------------------------------------------------------
 COMMANDS					*vspec-commands*
 
-:It {message}					*:It*
-			Describe a group of expectations (which are described
-			by |:Should|).
+:describe {subject}				*:describe*
+:end
+			Define a set of examples about {subject}.  {subject}
+			is a string to describe the subject of the examples.
 
-			{message} is a string which represents a description
-			of expectations after :It.  This message is just used
-			for output.
+:it {example}					*:it*
+:end
+			Define an example.  {example} is a string to describe
+			the example.  An |:it| block must be written in
+			a |:describe| block.
 
 			Examples:
 >
-				:It "should match case-sensitively"
-				:Should 'abc' =~ 'a'
-				:Should 'abc' !~ 'A'
+				describe 'comparison operators'
+				  it 'should match case-sensitively'
+				    Expect 'abc' =~# 'a'
+				    Expect 'abc' !~# 'A'
+				  end
+				end
 <
-
-:ResetContext					*:ResetContext*
-			Reset the current context of a script with one saved
-			by |:SaveContext|.
-
-			To use this feature, you have to tell "scope" hint to
-			vspec with |vspec#hint()|.
-
-:SaveContext					*:SaveContext*
-			Save the current context of a script, i.e., an
-			snapshot of script-local variables defined in the
-			script.  See also |:ResetContext|.
-
-			:SaveContext is automatically executed whenever
-			|vspec#hint()| is called with "scope" hint.
-
-			To use this feature, you have to tell "scope" hint to
-			vspec with |vspec#hint()|.
-
-:Should {actual} {matcher} {expected}		*:Should*
+:Expect {actual} {matcher} {expected}		*:Expect*
 			Describe an expectation - test whether {actual} value
 			matches with {expected} value, in a sense of
 			{matcher}.
@@ -134,24 +121,25 @@ COMMANDS					*vspec-commands*
 
 			Examples:
 >
-				:Should 'abc' =~# 'A'
+				:Expect 'abc' =~# 'A'
 				" ==> good
-				:Should 'abc' =~? 'A'
+				:Expect 'abc' =~? 'A'
 				" ==> bad
 
-				:Should {} == {}
+				:Expect {} == {}
 				" ==> good
-				:Should {} isnot {}
+				:Expect {} isnot {}
 				" ==> bad
 <
-						*vspec-custom-matcher*
-			If {matcher} is "be", :Should acts in another mode.
-			{expected} is treated as an alias of a function which
-			is called "custom matcher".  The custom matcher
-			corresponding to {expected} is called with {actual}
-			value.  It must return true if {actual} value is
-			valid, otherwise it must return false.  See also
-			|vspec#customize_matcher()|.
+:Expect {actual} {custom-matcher} [{arg}, ...]	*vspec-custom-matcher*
+			If {custom-matcher} starts with "to", :Expect acts in
+			another mode.  {custom-matcher} is treated as an alias
+			of a function which is called "custom matcher".
+
+			The custom matcher will be called with {actual} and
+			{arg}s.  It must return true if {actual} value is
+			valid, otherwise it must return false.
+			See also |vspec#customize_matcher()|.
 
 			Examples:
 >
@@ -160,21 +148,69 @@ COMMANDS					*vspec-commands*
 				  \       ? a:actual_value
 				  \       : !!0)
 				endfunction
-				call vspec#customize_matcher('true',
+				call vspec#customize_matcher('toBeTrue',
 				\                            function('True'))
 
-				:Should 123 be true
+				:Expect 123 toBeTrue
 				" ===> good
-				:Should [123] be true
+				:Expect [123] toBeTrue
 				" ===> bad
 <
 					    *vspec-predefined-custom-matchers*
 			The following custom matcheres are predefined:
 
-			"true"
+			"toBeTrue"
 				Return true if {actual} value is true.
-			"false"
+			"toBeFalse"
 				Return true if {actual} value is false.
+
+:Expect {actual} not {matcher} {expected}	*:Expect-not*
+:Expect {actual} not {custom-matcher} [{arg}, ...]
+			Like |:Expect|, but test whether {actual} value does
+			NOT match with {expected} value, in a sense of
+			{matcher} or {custom-matcher}.
+
+:before						*:before*
+:end
+:after						*:after*
+:end
+			Define a code block which is run before/after each
+			example defined by |:it|.
+
+			Note that:
+			- Only one :before/:after block can be written in each
+			  |:describe| block.
+			- :before/:after blocks cannot be defined for
+			  |:describe| blocks.
+			- :before/:after blocks cannot be defined for
+			  a specific |:it| block.
+			These limitations might be resolved later.
+
+:ResetContext					*:ResetContext*
+			Reset the current context of a script with one saved
+			by |:SaveContext|.
+
+			To use this feature, you have to tell "scope" hint to
+			vspec with |vspec#hint()|.
+
+:SaveContext					*:SaveContext*
+			Save the current context of a script, i.e., an
+			snapshot of script-local variables defined in the
+			script.  See also |:ResetContext|.
+
+			:SaveContext is automatically executed whenever
+			|vspec#hint()| is called with "scope" hint.
+
+			To use this feature, you have to tell "scope" hint to
+			vspec with |vspec#hint()|.
+
+:TODO						*:TODO*
+			Represent that the current example is not written yet.
+			The current example will be always failed.
+
+:SKIP						*:SKIP*
+			Skip the current example.
+			The current example will be always succeeded.
 
 
 ------------------------------------------------------------------------------
@@ -243,9 +279,12 @@ vspec#set({varname}, {value})			*vspec#set()*
 			Assign {value} to a variable.  See |vspec#ref()| for
 			the details of {varname}.
 
-vspec#test({specfile})				*vspec#test()*
-			|:source| {specfile}, test expectations described in
-			{specfile}, then output a result of the test.
+vspec#test({specfile-path})			*vspec#test()*
+			|:source| {specfile-path}, test examples described in
+			the file, then output results of the exmaples.
+
+			Output format is Test Anything Protocol version 12.
+			See also http://testanything.org/ for the details.
 
 
 
@@ -253,7 +292,8 @@ vspec#test({specfile})				*vspec#test()*
 ==============================================================================
 EXAMPLES					*vspec-examples*
 
-See the content in "test" directory.
+See files in the "t" directory in a source tree of this plugin:
+https://github.com/kana/vim-vspec/tree/master/t
 
 
 
@@ -273,13 +313,26 @@ PLANNED FEATURES ~
 
 ETC ~
 
-- Welcome your feedback.
+- Welcome your feedback at: http://github.com/kana/vim-vspec/issues
 
 
 
 
 ==============================================================================
 CHANGELOG					*vspec-changelog*
+
+1.0.0	2012-01-31T00:32:15+09:00		*vspec-changelog-1.0.0*
+	- Completely rewritten.  No compatibility with old versions.
+	  - Output format is changed to Test Anything Protocol version 12.
+	  - The style to write examples is changed.
+	    See also |vspec-examples| for the details.
+	  - Change the order of arguments to |bin/vspec|.
+	  - Change the syntax for |vspec-custom-matcher| to be extensible and
+	    readable.
+	  - Add |:Expect-not| for counter examples.
+	  - Add |:TODO| for incomplete examples.
+	  - Add |:SKIP| for environment-specific examples.
+	  - Add |:before| blocks and |:after| blocks.
 
 0.0.4	2010-04-04T20:59:35+09:00		*vspec-changelog-0.0.4*
 	- Add additional syntax file for |vspec-commands|.
