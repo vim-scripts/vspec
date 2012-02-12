@@ -1,6 +1,6 @@
 #!/bin/bash
 # bin/vspec - Driver script to test Vim script
-# Version: 1.0.0
+# Version: 1.0.2
 # Copyright (C) 2009-2012 Kana Natsuno <http://whileimautomaton.net/>
 # License: So-called MIT/X license  {{{
 #     Permission is hereby granted, free of charge, to any person obtaining
@@ -39,7 +39,7 @@ unset args[$((${#args[@]}- 1))]  # Now holds all {non-standard-runtimepath}s.
 
 cat <<END >"$driver_script"
   function s:main()
-    let standard_paths = split(&runtimepath, ',')[1:-1]
+    let standard_paths = split(&runtimepath, ',')[1:-2]
     let non_standard_paths = reverse(['$(echo "${args[@]}" |
                                          sed "s/  */', '/g")'])
     let all_paths = copy(standard_paths)
@@ -54,7 +54,7 @@ cat <<END >"$driver_script"
   call s:main()
 END
 
-vim -u NONE -i NONE -N -e -s -S "$driver_script" 2>&1 | sed "s|$(pwd)|.|g"
+vim -u NONE -i NONE -N -e -s -S "$driver_script" 2>&1
 
 
 
