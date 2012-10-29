@@ -15,6 +15,7 @@ bin/vspec	vspec.txt	/*bin\/vspec*
 vspec	vspec.txt	/*vspec*
 vspec#call()	vspec.txt	/*vspec#call()*
 vspec#customize_matcher()	vspec.txt	/*vspec#customize_matcher()*
+vspec#customize_matcher()-old	vspec.txt	/*vspec#customize_matcher()-old*
 vspec#hint()	vspec.txt	/*vspec#hint()*
 vspec#ref()	vspec.txt	/*vspec#ref()*
 vspec#set()	vspec.txt	/*vspec#set()*
@@ -29,6 +30,7 @@ vspec-changelog-0.0.4	vspec.txt	/*vspec-changelog-0.0.4*
 vspec-changelog-1.0.0	vspec.txt	/*vspec-changelog-1.0.0*
 vspec-changelog-1.0.1	vspec.txt	/*vspec-changelog-1.0.1*
 vspec-changelog-1.0.2	vspec.txt	/*vspec-changelog-1.0.2*
+vspec-changelog-1.1.0	vspec.txt	/*vspec-changelog-1.1.0*
 vspec-commands	vspec.txt	/*vspec-commands*
 vspec-contents	vspec.txt	/*vspec-contents*
 vspec-custom-matcher	vspec.txt	/*vspec-custom-matcher*

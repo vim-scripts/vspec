@@ -1,6 +1,6 @@
-all_files_in_repos :=          Makefile after/indent/vim.vim after/syntax/vim/vspec.vim autoload/vspec.vim bin/vspec doc/vspec.txt t/after.vim t/before.vim t/builtin-matchers.vim t/check-vspec-result t/context.vim t/custom-matchers.vim t/error-in-describe.t t/error-in-it.t t/error-in-should-evaluating.t t/error-in-should-parsing.t t/error-in-source.t t/expect.vim t/indent.vim t/no-hint.vim t/no-test.vim t/runtimepath.vim t/skip.t t/syntax.vim t/todo.t t/tools.vim
+all_files_in_repos :=          Makefile after/indent/vim.vim after/syntax/vim/vspec.vim autoload/vspec.vim bin/vspec doc/vspec.txt t/after.vim t/before.vim t/builtin-matchers.vim t/check-vspec-result t/context.vim t/custom-failure-message.t t/custom-matchers.vim t/error-in-describe.t t/error-in-it.t t/error-in-should-evaluating.t t/error-in-should-parsing.t t/error-in-source.t t/expect.vim t/indent.vim t/no-hint.vim t/no-test.vim t/runtimepath.vim t/skip.t t/syntax.vim t/todo.t t/tools.vim
 current_branch := master
 origin_name := origin
 origin_uri := ../.
 repos_name := vim-vspec
-version := 1.0.2
+version := 1.1.0
